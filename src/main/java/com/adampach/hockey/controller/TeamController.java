@@ -1,6 +1,7 @@
 package com.adampach.hockey.controller;
 
 import com.adampach.hockey.exception.EntityNotFoundException;
+import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
 import com.adampach.hockey.service.TeamService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -52,12 +53,12 @@ public class TeamController {
         return ResponseEntity.created(URI.create("teams/" + createdTeam.getId())).body(createdTeam);
     }
 
-    @PutMapping
-    public ResponseEntity<Team> updateTeam(@RequestBody Team team) {
+    @PutMapping("{teamId}")
+    public ResponseEntity<Team> updateTeam(@PathVariable("teamId") int id, @RequestBody Team team) {
         Team updatedTeam;
 
         try {
-            updatedTeam = teamService.updateTeam(team);
+            updatedTeam = teamService.updateTeam(id, team);
         }
         catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -66,8 +67,8 @@ public class TeamController {
         return ResponseEntity.ok(updatedTeam);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Team> deleteTeam(@RequestParam int id) {
+    @DeleteMapping("{teamId}")
+    public ResponseEntity<Team> deleteTeam(@PathVariable("teamId") int id) {
 
         try {
             teamService.deleteTeam(id);
@@ -79,4 +80,17 @@ public class TeamController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("{teamId}/players")
+    public ResponseEntity<List<Player>> getTeamPlayers(@PathVariable("teamId") int teamId) {
+        List<Player> players;
+
+        try{
+            players = teamService.getPlayersForTeam(teamId);
+        }
+        catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(players);
+    }
 }

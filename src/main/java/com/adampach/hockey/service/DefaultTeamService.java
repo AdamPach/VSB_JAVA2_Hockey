@@ -1,6 +1,7 @@
 package com.adampach.hockey.service;
 
 import com.adampach.hockey.exception.EntityNotFoundException;
+import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
 import com.adampach.hockey.repository.TeamRepository;
 import jakarta.transaction.Transactional;
@@ -54,8 +55,13 @@ public class DefaultTeamService implements TeamService {
 
     @Transactional
     @Override
-    public Team updateTeam(Team team) {
-        Team oldTeam = FindTeamById(team.getId());
+    public Team updateTeam(int id, Team team) {
+        if(team.getId() != id)
+        {
+            throw new EntityNotFoundException("Team with id " + id + " not found");
+        }
+
+        Team oldTeam = FindTeamById(id);
 
         oldTeam.setName(team.getName());
         oldTeam.setDescription(team.getDescription());
@@ -72,6 +78,11 @@ public class DefaultTeamService implements TeamService {
         Team team = FindTeamById(id);
 
         teamRepository.delete(team);
+    }
+
+    @Override
+    public List<Player> getPlayersForTeam(int teamId) {
+        return FindTeamById(teamId).getPlayers();
     }
 
     private Team FindTeamById(int id) {

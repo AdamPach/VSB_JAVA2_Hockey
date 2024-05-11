@@ -1,5 +1,7 @@
 package com.adampach.hockey.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +31,8 @@ public class Team {
     @Column(nullable = false)
     private LocalDate EstablishmentDate;
 
-    @OneToMany(mappedBy = "Team")
+    @OneToMany(mappedBy = "Team", fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
     private List<Player> Players;
 }
