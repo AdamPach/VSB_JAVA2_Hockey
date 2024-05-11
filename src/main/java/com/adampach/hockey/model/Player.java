@@ -5,30 +5,28 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Team {
+public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
 
-    @Column(nullable = false, unique = true)
-    private String Name;
+    @Column(nullable = false)
+    private String FirstName;
 
     @Column(nullable = false)
-    private String Description;
+    private String LastName;
 
-    private String ImageUrl;
-
-    private String City;
+    private String Email;
 
     @Column(nullable = false)
-    private LocalDate EstablishmentDate;
+    private LocalDate BirthDate;
 
-    @OneToMany(mappedBy = "Team")
-    private List<Player> Players;
+    @ManyToOne
+    @JoinColumn(nullable = true)
+    private Team Team;
 }
