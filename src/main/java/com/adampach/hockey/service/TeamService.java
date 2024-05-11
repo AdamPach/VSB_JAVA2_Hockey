@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface TeamService {
     List<Team> getAllTeams();
+    Team createTeam(Team team);
 }
