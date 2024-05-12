@@ -1,5 +1,6 @@
 package com.adampach.hockey.service;
 
+import com.adampach.hockey.dto.UpdateTeam;
 import com.adampach.hockey.exception.EntityNotFoundException;
 import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
@@ -39,28 +40,24 @@ public class DefaultTeamService implements TeamService {
 
     @Transactional
     @Override
-    public Team createTeam(Team team) {
+    public Team createTeam(UpdateTeam team) {
+        Team newTeam = new Team();
 
         try{
-            teamRepository.save(team);
+            newTeam = teamRepository.save(team.getTeam());
         }catch (DataIntegrityViolationException e)
         {
             logger.warn("Trying to save a existing team");
             throw e;
         }
 
-        logger.info("Creating new team with name {} and id {} created", team.getName(), team.getId());
-        return team;
+        logger.info("Creating new team with name {} and id {} created", team.getName(), newTeam.getId());
+        return newTeam;
     }
 
     @Transactional
     @Override
-    public Team updateTeam(int id, Team team) {
-        if(team.getId() != id)
-        {
-            throw new EntityNotFoundException("Team with id " + id + " not found");
-        }
-
+    public Team updateTeam(int id, UpdateTeam team) {
         Team oldTeam = FindTeamById(id);
 
         oldTeam.setName(team.getName());

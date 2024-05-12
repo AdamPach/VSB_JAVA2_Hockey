@@ -1,5 +1,6 @@
 package com.adampach.hockey.controller;
 
+import com.adampach.hockey.dto.UpdateTeam;
 import com.adampach.hockey.exception.EntityNotFoundException;
 import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
@@ -40,7 +41,7 @@ public class TeamController {
     }
 
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody Team team) {
+    public ResponseEntity<Team> createTeam(@RequestBody UpdateTeam team) {
         Team createdTeam;
 
         try{
@@ -54,7 +55,7 @@ public class TeamController {
     }
 
     @PutMapping("{teamId}")
-    public ResponseEntity<Team> updateTeam(@PathVariable("teamId") int id, @RequestBody Team team) {
+    public ResponseEntity<Team> updateTeam(@PathVariable("teamId") int id, @RequestBody UpdateTeam team) {
         Team updatedTeam;
 
         try {
