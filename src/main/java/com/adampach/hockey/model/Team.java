@@ -37,8 +37,10 @@ public class Team {
     private List<Player> Players;
 
     @OneToMany(mappedBy = "HomeTeam")
+    @JsonIgnore
     private List<Match> HomeMatches;
 
     @OneToMany(mappedBy = "AwayTeam")
+    @JsonIgnore
     private List<Match> AwayMatches;
 }
