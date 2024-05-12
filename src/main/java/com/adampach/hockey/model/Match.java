@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"home_team_id", "away_team_id"})})
+@Table(uniqueConstraints = { @UniqueConstraint(columnNames = {"home_team_id", "away_team_id", "match_date"})})
 @Check(constraints = "home_team_id != away_team_id")
 public class Match {
     @Id
@@ -20,7 +20,7 @@ public class Match {
 
     private String Description;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "match_date")
     private LocalDate MatchDate;
 
     @ManyToOne
