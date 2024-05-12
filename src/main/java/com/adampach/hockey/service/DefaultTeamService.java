@@ -77,11 +77,6 @@ public class DefaultTeamService implements TeamService {
         teamRepository.delete(team);
     }
 
-    @Override
-    public List<Player> getPlayersForTeam(int teamId) {
-        return FindTeamById(teamId).getPlayers();
-    }
-
     private Team FindTeamById(int id) {
         Optional<Team> team = teamRepository.findById(id);
 

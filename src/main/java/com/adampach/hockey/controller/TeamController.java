@@ -4,6 +4,7 @@ import com.adampach.hockey.dto.UpdateTeam;
 import com.adampach.hockey.exception.EntityNotFoundException;
 import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
+import com.adampach.hockey.service.TeamPlayerService;
 import com.adampach.hockey.service.TeamService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,11 @@ import java.util.List;
 public class TeamController {
 
     private final TeamService teamService;
+    private final TeamPlayerService teamPlayerService;
 
-    public TeamController(TeamService teamService) {
+    public TeamController(TeamService teamService, TeamPlayerService teamPlayerService) {
         this.teamService = teamService;
+        this.teamPlayerService = teamPlayerService;
     }
 
     @GetMapping
@@ -86,7 +89,7 @@ public class TeamController {
         List<Player> players;
 
         try{
-            players = teamService.getPlayersForTeam(teamId);
+            players = teamPlayerService.getPlayersForTeam(teamId);
         }
         catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
