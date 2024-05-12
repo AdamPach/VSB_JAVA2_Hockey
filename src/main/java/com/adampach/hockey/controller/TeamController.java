@@ -1,11 +1,13 @@
 package com.adampach.hockey.controller;
 
+import com.adampach.hockey.dto.MatchDetail;
 import com.adampach.hockey.dto.UpdateTeam;
 import com.adampach.hockey.exception.EntityNotFoundException;
 import com.adampach.hockey.exception.PlayerIsAlreadyInTheTeamException;
 import com.adampach.hockey.exception.PlayerIsNotInTheTeam;
 import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
+import com.adampach.hockey.service.TeamMatchService;
 import com.adampach.hockey.service.TeamPlayerService;
 import com.adampach.hockey.service.TeamService;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,10 +23,15 @@ public class TeamController {
 
     private final TeamService teamService;
     private final TeamPlayerService teamPlayerService;
+    private final TeamMatchService teamMatchService;
 
-    public TeamController(TeamService teamService, TeamPlayerService teamPlayerService) {
+    public TeamController(
+            TeamService teamService,
+            TeamPlayerService teamPlayerService,
+            TeamMatchService teamMatchService) {
         this.teamService = teamService;
         this.teamPlayerService = teamPlayerService;
+        this.teamMatchService = teamMatchService;
     }
 
     @GetMapping
@@ -134,5 +141,21 @@ public class TeamController {
         }
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{teamId}/matches")
+    public ResponseEntity<List<MatchDetail>> getTeamMatches(@PathVariable("teamId") int teamId)
+    {
+        List<MatchDetail> matches;
+
+        try {
+            matches = teamMatchService.getMatchesForTeam(teamId);
+        }
+        catch (EntityNotFoundException e)
+        {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(matches);
     }
 }
