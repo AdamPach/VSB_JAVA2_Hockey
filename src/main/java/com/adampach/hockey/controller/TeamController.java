@@ -2,6 +2,8 @@ package com.adampach.hockey.controller;
 
 import com.adampach.hockey.dto.UpdateTeam;
 import com.adampach.hockey.exception.EntityNotFoundException;
+import com.adampach.hockey.exception.PlayerIsAlreadyInTheTeamException;
+import com.adampach.hockey.exception.PlayerIsNotInTheTeam;
 import com.adampach.hockey.model.Player;
 import com.adampach.hockey.model.Team;
 import com.adampach.hockey.service.TeamPlayerService;
@@ -96,5 +98,41 @@ public class TeamController {
         }
 
         return ResponseEntity.ok(players);
+    }
+
+    @PostMapping("{teamId}/players/{playerId}")
+    public ResponseEntity<Player> addPlayerToTeam(
+            @PathVariable("teamId") int teamId,
+            @PathVariable("playerId") int playerId) {
+
+        try {
+            teamPlayerService.addPlayerToTeam(teamId, playerId);
+        }
+        catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (PlayerIsAlreadyInTheTeamException e) {
+            return ResponseEntity.status(409).build();
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("{teamId}/players/{playerId}")
+    public ResponseEntity<Player> removePlayerFromTeam(
+            @PathVariable("teamId") int teamId,
+            @PathVariable("playerId") int playerId){
+
+        try {
+            teamPlayerService.removePlayerFromTeam(teamId, playerId);
+        }
+        catch (EntityNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+        catch (PlayerIsNotInTheTeam e) {
+            return ResponseEntity.status(409).build();
+        }
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface TeamPlayerService {
     List<Player> getPlayersForTeam(int teamId);
+
+    void addPlayerToTeam(int teamId, int playerId);
+
+    void removePlayerFromTeam(int teamId, int playerId);
 }
