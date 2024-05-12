@@ -29,8 +29,11 @@ public class Player {
     private LocalDate BirthDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = true)
+    @JoinColumn(name = "team_id")
     @JsonIgnore
     @JsonBackReference
     private Team Team;
+
+    @Column(name = "team_id", updatable = false, insertable = false)
+    private Integer TeamId;
 }
