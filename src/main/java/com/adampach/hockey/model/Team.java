@@ -35,4 +35,10 @@ public class Team {
     @JsonManagedReference
     @JsonIgnore
     private List<Player> Players;
+
+    @OneToMany(mappedBy = "HomeTeam")
+    private List<Match> HomeMatches;
+
+    @OneToMany(mappedBy = "AwayTeam")
+    private List<Match> AwayMatches;
 }
