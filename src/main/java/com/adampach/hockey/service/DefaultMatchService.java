@@ -85,7 +85,7 @@ public class DefaultMatchService implements MatchService {
     public void deleteMatch(int matchId) {
         Match match = getMatchById(matchId);
 
-        teamService.deleteTeam(matchId);
+        matchRepository.delete(match);
     }
 
     private Match getMatchById(int id) {

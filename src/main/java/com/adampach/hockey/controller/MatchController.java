@@ -54,7 +54,7 @@ public class MatchController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.created(URI.create("/matches/" + matchDetail.getId())).build();
+        return ResponseEntity.created(URI.create("/matches/" + matchDetail.getId())).body(matchDetail);
     }
 
     @PutMapping("{matchId}")

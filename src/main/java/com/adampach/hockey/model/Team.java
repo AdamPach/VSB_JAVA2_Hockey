@@ -36,11 +36,11 @@ public class Team {
     @JsonIgnore
     private List<Player> Players;
 
-    @OneToMany(mappedBy = "HomeTeam")
+    @OneToMany(mappedBy = "HomeTeam", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Match> HomeMatches;
 
-    @OneToMany(mappedBy = "AwayTeam")
+    @OneToMany(mappedBy = "AwayTeam", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Match> AwayMatches;
 }
